@@ -4,7 +4,6 @@
 Phân tích và dự đoán nguy cơ nghỉ việc (Attrition) của nhân viên bằng Python, dựa trên bộ dữ liệu **Employee Attrition Analytics Dataset 2026** (Kaggle). Dự án bao gồm đầy đủ quy trình: làm sạch dữ liệu → phân tích khám phá (EDA) → trực quan hóa → xây dựng mô hình Machine Learning.
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
-![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange?logo=jupyter)
 ![scikit--learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikit-learn)
 ![Status](https://img.shields.io/badge/Status-Completed-success)
 
