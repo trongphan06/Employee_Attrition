@@ -1,4 +1,3 @@
-# Employee_Attrition
 # 📊 Employee Attrition Analysis & Prediction
 
 Phân tích và dự đoán nguy cơ nghỉ việc (Attrition) của nhân viên bằng Python, dựa trên bộ dữ liệu **Employee Attrition Analytics Dataset 2026** (Kaggle). Dự án bao gồm đầy đủ quy trình: làm sạch dữ liệu → phân tích khám phá (EDA) → trực quan hóa → xây dựng mô hình Machine Learning.
