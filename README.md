@@ -1,6 +1,6 @@
 # 📊 Employee Attrition Analysis & Prediction
 
-Phân tích và dự đoán nguy cơ nghỉ việc (Attrition) của nhân viên bằng Python, dựa trên bộ dữ liệu **Employee Attrition Analytics Dataset 2026** (Kaggle). Dự án bao gồm đầy đủ quy trình: làm sạch dữ liệu → phân tích khám phá (EDA) → trực quan hóa → xây dựng mô hình Machine Learning.
+Analysis and prediction of employee attrition risk based on the **Employee Attrition Analytics Dataset 2026** (15,000 employees, 32 columns).
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
 ![scikit--learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikit-learn)
@@ -8,24 +8,24 @@ Phân tích và dự đoán nguy cơ nghỉ việc (Attrition) của nhân viên
 
 ---
 
-## 🔍 Insight Chính
+## 🔍 Key Insights
 
-- **Tỷ lệ Attrition tổng thể:** 32.3% Yes / 67.7% No — gần 1/3 nhân viên trong dataset thuộc nhóm đã nghỉ việc.
-- **Theo phòng ban:** `HR` có tỷ lệ nghỉ việc cao nhất (33.3%), `Marketing` thấp nhất (31.4%). Chênh lệch giữa các phòng ban chỉ khoảng ~2 điểm % — Department không phải yếu tố phân hóa mạnh.
-- **Thâm niên:** `HR` có thời gian gắn bó trung bình cao nhất (4.6 năm), `Marketing` thấp nhất (4.35 năm). Đáng chú ý, `IT` (35 năm) và `Sales` (34 năm) là 2 phòng ban duy nhất có nhân viên gắn bó **trên 30 năm**.
-- **Lương theo cấp bậc:** Thu nhập trung bình tăng đều và rõ rệt theo `Job_Level` — từ ~5.7 triệu (cấp 1) lên ~14.6 triệu (cấp 5), chênh lệch ~2.6 lần giữa cấp thấp nhất và cao nhất.
-- **Outlier:** Một số biến số (`Commute_Time_Minutes`, `Absence_Days`...) có điểm dữ liệu vượt ngưỡng IQR thông thường, cần lưu ý nếu đưa vào các mô hình nhạy cảm với outlier (Logistic Regression).
+- **Overall attrition rate:** 32.3% Yes / 67.7% No — nearly 1 in 3 employees in the dataset belong to the "left" group.
+- **By department:** `HR` has the highest attrition rate (33.3%), `Marketing` the lowest (31.4%). The gap between departments is only about ~2 percentage points — Department is not a strongly discriminating factor.
+- **Tenure:** `HR` has the highest average tenure (4.6 years), `Marketing` the lowest (4.35 years). Notably, `IT` (35 years) and `Sales` (34 years) are the only two departments with employees who have stayed **over 30 years**.
+- **Salary by job level:** Average income rises steadily and clearly with `Job_Level` — from ~$5.7K (level 1) to ~$14.6K (level 5), a ~2.6x gap between the lowest and highest levels.
+- **Outliers:** Several numerical variables (`Commute_Time_Minutes`, `Absence_Days`...) have data points beyond the typical IQR threshold — worth noting if feeding into outlier-sensitive models (Logistic Regression).
 
 ---
 
-## 📈 Kết quả Phân tích
+## 📈 Analysis Results
 
-**Từ biểu đồ tương quan:**
-- Sau `Attrition_Risk_Score` (biến có sẵn, r = 0.60), hai yếu tố tương quan mạnh nhất với Attrition là **Overtime** (r = +0.23) và **Job_Satisfaction** (r = −0.20) — làm thêm giờ nhiều và mức hài lòng công việc thấp là 2 tín hiệu cảnh báo rõ ràng nhất.
-- Các yếu tố điều kiện làm việc (`Work_Life_Balance`, `Distance_From_Home`, `Commute_Time_Minutes`) đều có tương quan ở mức trung bình (|r| ≈ 0.10–0.15).
-- Đặc điểm nhân khẩu học (`Age`, `Number_Of_Projects`, `Team_Size`) gần như **không tương quan** với Attrition (|r| < 0.02) → trải nghiệm làm việc hằng ngày tác động đến quyết định nghỉ việc nhiều hơn là đặc điểm cá nhân.
+**From the correlation chart:**
+- Aside from `Attrition_Risk_Score` (a pre-existing field, r = 0.60), the two strongest correlates of Attrition are **Overtime** (r = +0.23) and **Job_Satisfaction** (r = −0.20) — heavy overtime and low job satisfaction are the clearest warning signals.
+- Working-condition factors (`Work_Life_Balance`, `Distance_From_Home`, `Commute_Time_Minutes`) all show moderate correlation (|r| ≈ 0.10–0.15).
+- Demographic traits (`Age`, `Number_Of_Projects`, `Team_Size`) show **almost no correlation** with Attrition (|r| < 0.02) → day-to-day work experience drives attrition far more than personal characteristics.
 
-**Từ các mô hình:**
+**From the models:**
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 |---|---|---|---|---|---|
@@ -33,27 +33,27 @@ Phân tích và dự đoán nguy cơ nghỉ việc (Attrition) của nhân viên
 | RandomForestClassifier | 0.733 | 0.633 | 0.412 | 0.499 | 0.753 |
 | LogisticRegression | 0.723 | 0.628 | 0.351 | 0.450 | 0.733 |
 
-- **AdaBoostClassifier** cho kết quả tốt nhất tổng thể, vượt trội nhẹ so với Random Forest và Logistic Regression trên cả Accuracy lẫn ROC-AUC.
-- Dù Accuracy tổng thể khá khả quan (~75%), **Recall cho nhóm "sẽ nghỉ việc" chỉ đạt 35–45%** — mô hình bỏ sót hơn một nửa số ca thực sự nghỉ việc. Điều này phù hợp với mức tương quan trung bình-thấp quan sát được ở phần EDA: các đặc trưng hiện có chưa đủ mạnh để tách bạch hoàn toàn 2 nhóm.
+- **AdaBoostClassifier** delivers the best overall performance, edging out Random Forest and Logistic Regression on both Accuracy and ROC-AUC.
+- While overall Accuracy is decent (~75%), **Recall for the "will leave" class is only 35–45%** — the model misses more than half of the employees who actually leave. This aligns with the moderate-to-low correlations found during EDA: the current features aren't strong enough to fully separate the two classes.
 
 ---
 
-## 🤖 Mô hình hóa dự báo nâng cao
+## 🤖 Advanced Predictive Modeling
 
-- **Tiền xử lý:** `StandardScaler` cho biến số kết hợp `OneHotEncoder` cho biến phân loại thông qua `ColumnTransformer`.
-- **Chia dữ liệu:** Train/test 70/30, `stratify` theo `Attrition` để giữ nguyên tỷ lệ lớp giữa 2 tập.
-- **Benchmark sàng lọc:** Dùng `LazyPredict` chạy đồng thời ~20 thuật toán phân loại (AdaBoost, LightGBM, Random Forest, XGBoost, Logistic Regression...) để khoanh vùng ứng viên tiềm năng trước khi đi sâu.
-- **Huấn luyện chi tiết:** 3 mô hình được tinh chỉnh và đánh giá đầy đủ bằng Confusion Matrix + Classification Report: `AdaBoostClassifier`, `RandomForestClassifier`, `LogisticRegression`.
-- **Giải thích mô hình:** Trích xuất Feature Importance từ AdaBoost và Random Forest để xác định đặc trưng đóng góp nhiều nhất vào quyết định dự đoán.
+- **Preprocessing:** `StandardScaler` for numerical features combined with `OneHotEncoder` for categorical features via `ColumnTransformer`.
+- **Data split:** 70/30 train/test, `stratify`-ed on `Attrition` to preserve class ratio across both sets.
+- **Screening benchmark:** Used `LazyPredict` to run ~20 classification algorithms simultaneously (AdaBoost, LightGBM, Random Forest, XGBoost, Logistic Regression...) to shortlist promising candidates before going deeper.
+- **Detailed training:** Three models were fully tuned and evaluated with Confusion Matrix + Classification Report: `AdaBoostClassifier`, `RandomForestClassifier`, `LogisticRegression`.
+- **Model explainability:** Extracted Feature Importance from AdaBoost and Random Forest to identify which features contribute most to the prediction.
 
 ---
 
-## ⚠️ Hạn chế & Hướng phát triển
+## ⚠️ Limitations & Future Work
 
-- **Recall thấp** ở lớp Attrition = 1 → mô hình hiện tại phù hợp để tham khảo xu hướng tổng quan, chưa đủ tin cậy để "báo động sớm" từng cá nhân cụ thể. Có thể cải thiện bằng:
-  - Xử lý mất cân bằng dữ liệu (`SMOTE`, `class_weight='balanced'`).
-  - Điều chỉnh ngưỡng phân loại (threshold tuning) thay vì mặc định 0.5.
-- **Chưa đưa biến phân loại** (`Department`, `Job_Role`, `Business_Travel`) vào tập đặc trưng huấn luyện — có thể bổ sung để tăng sức mạnh dự đoán, đặc biệt khi `Department` cho thấy sự khác biệt nhẹ về Attrition trong EDA.
-- Thử nghiệm **GridSearch/Optuna** để tinh chỉnh hyperparameter cho AdaBoost, LightGBM, XGBoost — hiện mới chạy với tham số mặc định.
-- Bổ sung **SHAP values** để giải thích đóng góp của từng đặc trưng ở cấp độ từng dự đoán cá nhân, thay vì chỉ Feature Importance tổng quát.
-- Cân nhắc loại `Attrition_Risk_Score` khỏi tập đặc trưng khi training (nếu đây là biến được tính toán *sau* khi biết Attrition) để tránh rủi ro **data leakage**.
+- **Low Recall** on the Attrition = 1 class → the current model is suitable for spotting general trends but not yet reliable enough for "early warning" on specific individuals. Potential fixes:
+  - Address class imbalance (`SMOTE`, `class_weight='balanced'`).
+  - Tune the classification threshold instead of using the default 0.5.
+- **Categorical variables not yet included** (`Department`, `Job_Role`, `Business_Travel`) in the training features — adding them could boost predictive power, especially since `Department` showed a slight difference in attrition during EDA.
+- Try **GridSearch/Optuna** to tune hyperparameters for AdaBoost, LightGBM, and XGBoost — currently run with default parameters only.
+- Add **SHAP values** to explain each feature's contribution at the individual prediction level, rather than relying solely on aggregate Feature Importance.
+- Consider removing `Attrition_Risk_Score` from the training features (if this value is computed *after* attrition is already known) to avoid the risk of **data leakage**.
